@@ -30445,14 +30445,25 @@
 	            },
 	            'Instrumental'
 	          ),
-	          React.createElement('audio', { src: this.state.mp3, autoPlay: true, controls: true, style: s('controls__audio') })
+	          React.createElement('audio', { ref: 'audio', src: this.state.mp3, autoPlay: true, controls: true, style: s('controls__audio') })
 	        )
 	      ),
 	      React.createElement('iframe', { src: song.pdf, style: s('iframe') })
 	    );
 	  },
+	  componentDidMount: function componentDidMount() {
+	    var audio = this.refs.audio.getDOMNode();
+	    audio.addEventListener('ended', this.handleEnded);
+	  },
+	  componentWillUnmount: function componentWillUnmount() {
+	    var audio = this.refs.audio.getDOMNode();
+	    audio.removeEventListener('ended', this.handleEnded);
+	  },
 	  handleMP3Change: function handleMP3Change(mp3) {
 	    this.setState({ mp3: mp3 });
+	  },
+	  handleEnded: function handleEnded() {
+	    location.reload();
 	  }
 	});
 	

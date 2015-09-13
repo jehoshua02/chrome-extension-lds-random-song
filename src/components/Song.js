@@ -37,7 +37,7 @@ var Song = React.createClass({
               ])}
             >Instrumental</button>
 
-            <audio src={this.state.mp3} autoPlay controls style={s('controls__audio')} />
+            <audio ref="audio" src={this.state.mp3} autoPlay controls style={s('controls__audio')} />
           </div>
         </div>
 
@@ -45,8 +45,19 @@ var Song = React.createClass({
       </div>
     );
   },
+  componentDidMount: function () {
+    var audio = this.refs.audio.getDOMNode();
+    audio.addEventListener('ended', this.handleEnded);
+  },
+  componentWillUnmount: function () {
+    var audio = this.refs.audio.getDOMNode();
+    audio.removeEventListener('ended', this.handleEnded);
+  },
   handleMP3Change: function (mp3) {
     this.setState({mp3: mp3});
+  },
+  handleEnded: function () {
+    location.reload();
   }
 });
 
