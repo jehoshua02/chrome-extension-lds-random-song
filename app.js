@@ -25378,6 +25378,7 @@
 	'use strict';
 	
 	var Promise = __webpack_require__(342);
+	var randomInt = __webpack_require__(347);
 	
 	var collections = ['Hymns-EN/269', 'Childrens-EN/275'];
 	
@@ -25420,10 +25421,13 @@
 	module.exports = {
 	  fetchRandomSong: function fetchRandomSong() {
 	    return new Promise(function (resolve, reject) {
-	      var collection = collections[Math.round(Math.random() * collections.length)];
-	      fetchCollection(collection).then(function (hymns) {
-	        var index = Math.round(Math.random() * hymns.length);
-	        resolve(songFromApiItem(hymns[index]));
+	      var index = randomInt(0, collections.length - 1);
+	      console.log(index, collections.length);
+	      var collection = collections[index];
+	      fetchCollection(collection).then(function (items) {
+	        var index = randomInt(0, items.length - 1);
+	        console.log(index, items.length);
+	        resolve(songFromApiItem(items[index]));
 	      });
 	    });
 	  }
@@ -30553,6 +30557,18 @@
 	    width: 300
 	  }
 	};
+
+/***/ },
+/* 347 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	function randomInt(min, max) {
+	  return Math.round(Math.random() * (max - min)) + min;
+	}
+	
+	module.exports = randomInt;
 
 /***/ }
 /******/ ]);

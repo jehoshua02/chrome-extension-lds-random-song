@@ -1,4 +1,5 @@
 var Promise = require('bluebird');
+var randomInt = require('../util/randomInt');
 
 var collections = [
   'Hymns-EN/269',
@@ -47,10 +48,13 @@ function songFromApiItem(item) {
 module.exports = {
   fetchRandomSong: function () {
     return new Promise(function (resolve, reject) {
-      var collection = collections[Math.round(Math.random() * collections.length)];
-      fetchCollection(collection).then(function (hymns) {
-        var index = Math.round(Math.random() * hymns.length);
-        resolve(songFromApiItem(hymns[index]));
+      var index = randomInt(0, collections.length - 1);
+      console.log(index, collections.length);
+      var collection = collections[index];
+      fetchCollection(collection).then(function (items) {
+        var index = randomInt(0, items.length - 1);
+        console.log(index, items.length);
+        resolve(songFromApiItem(items[index]));
       });
     });
   }
