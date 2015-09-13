@@ -12,32 +12,26 @@ var Song = React.createClass({
   },
   getInitialState: function () {
     return {
-      mp3: this.props.vocalMP3
+      currentTime: 0,
+      vocals: true
     };
   },
   render: function () {
     var song = this.props;
+    var mp3 = this.state.vocals ? song.vocalMP3 : song.instrumentalMP3;
     return (
       <div>
         <div style={s('controls')}>
           <div style={s('controls__inner')}>
             <button
-              onClick={this.handleMP3Change.bind(this, song.vocalMP3)}
+              onClick={this.handleVocalsToggle.bind(this)}
               style={s([
                 {'controls__button': true},
-                {'controls__button--active': this.state.mp3 === song.vocalMP3}
+                {'controls__button--active': this.state.vocals}
               ])}
             >Vocals</button>
 
-            <button
-              onClick={this.handleMP3Change.bind(this, song.instrumentalMP3)}
-              style={s([
-                {'controls__button': true},
-                {'controls__button--active': this.state.mp3 === song.instrumentalMP3}
-              ])}
-            >Instrumental</button>
-
-            <audio ref="audio" src={this.state.mp3} autoPlay controls style={s('controls__audio')} />
+            <audio ref="audio" src={mp3} autoPlay controls style={s('controls__audio')} />
           </div>
         </div>
 
@@ -46,18 +40,30 @@ var Song = React.createClass({
     );
   },
   componentDidMount: function () {
-    var audio = this.refs.audio.getDOMNode();
+    var audio = this.getAudioNode();
     audio.addEventListener('ended', this.handleEnded);
+    audio.addEventListener('canplay', this.handleCanplay);
   },
   componentWillUnmount: function () {
-    var audio = this.refs.audio.getDOMNode();
+    var audio = this.getAudioNode();
     audio.removeEventListener('ended', this.handleEnded);
+    audio.removeEventListener('canplay', this.handleCanplay);
   },
-  handleMP3Change: function (mp3) {
-    this.setState({mp3: mp3});
+  handleVocalsToggle: function () {
+    this.setState({
+      vocals: !this.state.vocals,
+      currentTime: this.getAudioNode().currentTime
+    });
   },
   handleEnded: function () {
     location.reload();
+  },
+  handleCanplay: function () {
+    var audio = this.getAudioNode();
+    audio.currentTime = this.state.currentTime;
+  },
+  getAudioNode: function () {
+    return this.refs.audio.getDOMNode();
   }
 });
 

@@ -20,7 +20,7 @@ module.exports = {
   },
   'controls__inner': {
     height: '100%',
-    width: 426,
+    width: 348,
     margin: '0 auto'
   },
   'controls__button': {

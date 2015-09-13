@@ -30415,11 +30415,13 @@
 	  },
 	  getInitialState: function getInitialState() {
 	    return {
-	      mp3: this.props.vocalMP3
+	      currentTime: 0,
+	      vocals: true
 	    };
 	  },
 	  render: function render() {
 	    var song = this.props;
+	    var mp3 = this.state.vocals ? song.vocalMP3 : song.instrumentalMP3;
 	    return React.createElement(
 	      'div',
 	      null,
@@ -30432,38 +30434,42 @@
 	          React.createElement(
 	            'button',
 	            {
-	              onClick: this.handleMP3Change.bind(this, song.vocalMP3),
-	              style: s([{ 'controls__button': true }, { 'controls__button--active': this.state.mp3 === song.vocalMP3 }])
+	              onClick: this.handleVocalsToggle.bind(this),
+	              style: s([{ 'controls__button': true }, { 'controls__button--active': this.state.vocals }])
 	            },
 	            'Vocals'
 	          ),
-	          React.createElement(
-	            'button',
-	            {
-	              onClick: this.handleMP3Change.bind(this, song.instrumentalMP3),
-	              style: s([{ 'controls__button': true }, { 'controls__button--active': this.state.mp3 === song.instrumentalMP3 }])
-	            },
-	            'Instrumental'
-	          ),
-	          React.createElement('audio', { ref: 'audio', src: this.state.mp3, autoPlay: true, controls: true, style: s('controls__audio') })
+	          React.createElement('audio', { ref: 'audio', src: mp3, autoPlay: true, controls: true, style: s('controls__audio') })
 	        )
 	      ),
 	      React.createElement('iframe', { src: song.pdf, style: s('iframe') })
 	    );
 	  },
 	  componentDidMount: function componentDidMount() {
-	    var audio = this.refs.audio.getDOMNode();
+	    var audio = this.getAudioNode();
 	    audio.addEventListener('ended', this.handleEnded);
+	    audio.addEventListener('canplay', this.handleCanplay);
 	  },
 	  componentWillUnmount: function componentWillUnmount() {
-	    var audio = this.refs.audio.getDOMNode();
+	    var audio = this.getAudioNode();
 	    audio.removeEventListener('ended', this.handleEnded);
+	    audio.removeEventListener('canplay', this.handleCanplay);
 	  },
-	  handleMP3Change: function handleMP3Change(mp3) {
-	    this.setState({ mp3: mp3 });
+	  handleVocalsToggle: function handleVocalsToggle() {
+	    this.setState({
+	      vocals: !this.state.vocals,
+	      currentTime: this.getAudioNode().currentTime
+	    });
 	  },
 	  handleEnded: function handleEnded() {
 	    location.reload();
+	  },
+	  handleCanplay: function handleCanplay() {
+	    var audio = this.getAudioNode();
+	    audio.currentTime = this.state.currentTime;
+	  },
+	  getAudioNode: function getAudioNode() {
+	    return this.refs.audio.getDOMNode();
 	  }
 	});
 	
@@ -30529,7 +30535,7 @@
 	  },
 	  'controls__inner': {
 	    height: '100%',
-	    width: 426,
+	    width: 348,
 	    margin: '0 auto'
 	  },
 	  'controls__button': {
