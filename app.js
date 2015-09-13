@@ -25340,7 +25340,7 @@
 	
 	var React = __webpack_require__(185);
 	var LDSMusic = __webpack_require__(341);
-	var Song = __webpack_require__(344);
+	var Song = __webpack_require__(345);
 	
 	var App = React.createClass({
 	  displayName: 'App',
@@ -25378,7 +25378,7 @@
 	'use strict';
 	
 	var Promise = __webpack_require__(342);
-	var randomInt = __webpack_require__(347);
+	var randomInt = __webpack_require__(344);
 	
 	var collections = ['Hymns-EN/269', 'Childrens-EN/275'];
 	
@@ -30397,13 +30397,25 @@
 
 /***/ },
 /* 344 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	function randomInt(min, max) {
+	  return Math.round(Math.random() * (max - min)) + min;
+	}
+	
+	module.exports = randomInt;
+
+/***/ },
+/* 345 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var React = __webpack_require__(185);
 	var T = React.PropTypes;
-	var s = __webpack_require__(345)(__webpack_require__(346));
+	var s = __webpack_require__(346)(__webpack_require__(347));
 	
 	var Song = React.createClass({
 	  displayName: 'Song',
@@ -30478,7 +30490,7 @@
 	module.exports = Song;
 
 /***/ },
-/* 345 */
+/* 346 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -30510,7 +30522,7 @@
 	module.exports = factory;
 
 /***/ },
-/* 346 */
+/* 347 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -30556,18 +30568,6 @@
 	    width: 300
 	  }
 	};
-
-/***/ },
-/* 347 */
-/***/ function(module, exports) {
-
-	"use strict";
-	
-	function randomInt(min, max) {
-	  return Math.round(Math.random() * (max - min)) + min;
-	}
-	
-	module.exports = randomInt;
 
 /***/ }
 /******/ ]);
