@@ -53,6 +53,8 @@ module.exports = {
       fetchCollection(collection).then(function (items) {
         var index = randomInt(0, items.length - 1);
         resolve(songFromApiItem(items[index]));
+      }).error(function () {
+        reject('Failed to fetchCollection.');
       });
     });
   }

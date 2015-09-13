@@ -25365,7 +25365,9 @@
 	  componentDidMount: function componentDidMount() {
 	    LDSMusic.fetchRandomSong().then((function (song) {
 	      this.setState({ song: song });
-	    }).bind(this));
+	    }).bind(this))['catch'](function () {
+	      location.reload();
+	    });
 	  }
 	});
 	
@@ -25426,6 +25428,8 @@
 	      fetchCollection(collection).then(function (items) {
 	        var index = randomInt(0, items.length - 1);
 	        resolve(songFromApiItem(items[index]));
+	      }).error(function () {
+	        reject('Failed to fetchCollection.');
 	      });
 	    });
 	  }

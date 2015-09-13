@@ -19,7 +19,9 @@ var App = React.createClass({
   componentDidMount: function () {
     LDSMusic.fetchRandomSong().then(function (song) {
       this.setState({song: song});
-    }.bind(this));
+    }.bind(this)).catch(function () {
+      location.reload();
+    });
   }
 });
 
