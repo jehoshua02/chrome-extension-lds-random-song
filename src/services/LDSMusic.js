@@ -49,11 +49,9 @@ module.exports = {
   fetchRandomSong: function () {
     return new Promise(function (resolve, reject) {
       var index = randomInt(0, collections.length - 1);
-      console.log(index, collections.length);
       var collection = collections[index];
       fetchCollection(collection).then(function (items) {
         var index = randomInt(0, items.length - 1);
-        console.log(index, items.length);
         resolve(songFromApiItem(items[index]));
       });
     });

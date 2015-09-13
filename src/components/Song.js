@@ -24,7 +24,7 @@ var Song = React.createClass({
         <div style={s('controls')}>
           <div style={s('controls__inner')}>
             <button
-              onClick={this.handleVocalsToggle.bind(this)}
+              onClick={this.handleVocalsToggle}
               style={s([
                 {'controls__button': true},
                 {'controls__button--active': this.state.vocals}
