@@ -8,7 +8,9 @@
     "http://broadcast3.lds.org/crowdsource/Mobile/LDSMusic/Staging/Collections/*"
   ],
   "browser_action": {
-    "default_icon": "icon.png",
-    "default_popup": "index.html"
+    "default_icon": "icon.png"
+  },
+  "background": {
+    "scripts": ["index.js"]
   }
 }

@@ -10,7 +10,6 @@ var App = React.createClass({
   },
   render: function () {
     var song = this.state.song;
-    console.log(song);
     if (song === null) {
       return <h1>Loading ...</h1>;
     } else {

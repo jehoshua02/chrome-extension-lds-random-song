@@ -1,10 +1,10 @@
 var path = require('path');
 var config = {
   devtool: 'source-map',
-  entry: path.resolve(__dirname, 'src/index.jsx'),
+  entry: path.resolve(__dirname, 'src/index.js'),
   output: {
     path: __dirname,
-    filename: 'index.js'
+    filename: 'app.js'
   },
   module: {
     loaders: [

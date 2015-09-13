@@ -1,5 +1,6 @@
 var React = require('react');
 var T = React.PropTypes;
+var s = require('../util/style')(require('./SongStyles'));
 
 var Song = React.createClass({
   propTypes: {
@@ -18,15 +19,29 @@ var Song = React.createClass({
     var song = this.props;
     return (
       <div>
-        <h1>{song.number} - {song.name}</h1>
-        <ul>
-          <li><a href={song.pdf} target="_blank">PDF</a></li>
-          <li>
-            <button onClick={this.handleMP3Change.bind(this, song.vocalMP3)}>Vocals</button>
-            | <button onClick={this.handleMP3Change.bind(this, song.instrumentalMP3)}>Instrumental</button>
-          </li>
-        </ul>
-        <audio src={this.state.mp3} autoPlay controls />
+        <div style={s('controls')}>
+          <div style={s('controls__inner')}>
+            <button
+              onClick={this.handleMP3Change.bind(this, song.vocalMP3)}
+              style={s([
+                {'controls__button': true},
+                {'controls__button--active': this.state.mp3 === song.vocalMP3}
+              ])}
+            >Vocals</button>
+
+            <button
+              onClick={this.handleMP3Change.bind(this, song.instrumentalMP3)}
+              style={s([
+                {'controls__button': true},
+                {'controls__button--active': this.state.mp3 === song.instrumentalMP3}
+              ])}
+            >Instrumental</button>
+
+            <audio src={this.state.mp3} autoPlay controls style={s('controls__audio')} />
+          </div>
+        </div>
+
+        <iframe src={song.pdf} style={s('iframe')} />
       </div>
     );
   },

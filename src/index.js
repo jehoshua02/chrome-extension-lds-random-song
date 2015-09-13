@@ -1,3 +1,4 @@
+require("babel/polyfill");
 var React = require('react');
 var App = require('./components/App');
 
