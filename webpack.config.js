@@ -1,5 +1,6 @@
 var path = require('path');
 var config = {
+  devtool: 'source-map',
   entry: path.resolve(__dirname, 'src/index.jsx'),
   output: {
     path: __dirname,
