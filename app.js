@@ -25352,7 +25352,6 @@
 	  },
 	  render: function render() {
 	    var song = this.state.song;
-	    console.log(song);
 	    if (song === null) {
 	      return React.createElement(
 	        'h1',
@@ -25380,12 +25379,16 @@
 	
 	var Promise = __webpack_require__(342);
 	
+	var collections = ['Hymns-EN/269', 'Childrens-EN/275'];
+	
 	var hymns = null;
 	
-	function fetchHymns() {
+	function fetchCollection(collection) {
 	  return new Promise(function (resolve, reject) {
+	    var url = 'http://broadcast3.lds.org/crowdsource/Mobile/LDSMusic/Staging/Collections/' + collection + '/Collection.json';
+	
 	    var x = new XMLHttpRequest();
-	    x.open('GET', 'http://broadcast3.lds.org/crowdsource/Mobile/LDSMusic/Staging/Collections/Hymns-EN/55/Collection.json');
+	    x.open('GET', url);
 	    x.responseType = 'json';
 	    x.onload = function () {
 	      var response = x.response;
@@ -25417,7 +25420,8 @@
 	module.exports = {
 	  fetchRandomSong: function fetchRandomSong() {
 	    return new Promise(function (resolve, reject) {
-	      fetchHymns().then(function (hymns) {
+	      var collection = collections[Math.round(Math.random() * collections.length)];
+	      fetchCollection(collection).then(function (hymns) {
 	        var index = Math.round(Math.random() * hymns.length);
 	        resolve(songFromApiItem(hymns[index]));
 	      });
@@ -30397,6 +30401,7 @@
 	
 	var React = __webpack_require__(185);
 	var T = React.PropTypes;
+	var s = __webpack_require__(345)(__webpack_require__(346));
 	
 	var Song = React.createClass({
 	  displayName: 'Song',
@@ -30420,15 +30425,15 @@
 	      null,
 	      React.createElement(
 	        'div',
-	        { style: this.style('controls') },
+	        { style: s('controls') },
 	        React.createElement(
 	          'div',
-	          { style: this.style('controls__inner') },
+	          { style: s('controls__inner') },
 	          React.createElement(
 	            'button',
 	            {
 	              onClick: this.handleMP3Change.bind(this, song.vocalMP3),
-	              style: this.style([{ 'controls__button': true }, { 'controls__button--active': this.state.mp3 === song.vocalMP3 }])
+	              style: s([{ 'controls__button': true }, { 'controls__button--active': this.state.mp3 === song.vocalMP3 }])
 	            },
 	            'Vocals'
 	          ),
@@ -30436,62 +30441,32 @@
 	            'button',
 	            {
 	              onClick: this.handleMP3Change.bind(this, song.instrumentalMP3),
-	              style: this.style([{ 'controls__button': true }, { 'controls__button--active': this.state.mp3 === song.instrumentalMP3 }])
+	              style: s([{ 'controls__button': true }, { 'controls__button--active': this.state.mp3 === song.instrumentalMP3 }])
 	            },
 	            'Instrumental'
 	          ),
-	          React.createElement('audio', { src: this.state.mp3, autoPlay: true, controls: true, style: this.style('controls__audio') })
+	          React.createElement('audio', { src: this.state.mp3, autoPlay: true, controls: true, style: s('controls__audio') })
 	        )
 	      ),
-	      React.createElement('iframe', { src: song.pdf, style: this.style('iframe') })
+	      React.createElement('iframe', { src: song.pdf, style: s('iframe') })
 	    );
 	  },
 	  handleMP3Change: function handleMP3Change(mp3) {
 	    this.setState({ mp3: mp3 });
-	  },
-	  style: function style(selectors) {
-	    var selectors = Array.prototype.slice.call(arguments, 0);
+	  }
+	});
 	
-	    var styles = {
-	      'iframe': {
-	        width: '100%',
-	        height: '100%',
-	        position: 'fixed',
-	        top: 0,
-	        left: 0,
-	        zIndex: 1,
-	        paddingTop: 30,
-	        boxSizing: 'border-box',
-	        border: '0 none'
-	      },
-	      'controls': {
-	        height: 30,
-	        width: '100%',
-	        position: 'fixed',
-	        top: 0,
-	        zIndex: 5,
-	        background: '#000'
-	      },
-	      'controls__inner': {
-	        height: '100%',
-	        width: 426,
-	        margin: '0 auto'
-	      },
-	      'controls__button': {
-	        height: '100%',
-	        color: '#fff',
-	        border: '0 none',
-	        verticalAlign: 'top',
-	        background: 'transparent'
-	      },
-	      'controls__button--active': {
-	        color: 'orange'
-	      },
-	      'controls__audio': {
-	        height: '100%',
-	        width: 300
-	      }
-	    };
+	module.exports = Song;
+
+/***/ },
+/* 345 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	function factory(styles) {
+	  return function (selectors) {
+	    var selectors = Array.prototype.slice.call(arguments, 0);
 	
 	    var style = {};
 	    selectors.forEach(function (selector) {
@@ -30510,10 +30485,57 @@
 	    });
 	
 	    return style;
-	  }
-	});
+	  };
+	}
 	
-	module.exports = Song;
+	module.exports = factory;
+
+/***/ },
+/* 346 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	module.exports = {
+	  'iframe': {
+	    width: '100%',
+	    height: '100%',
+	    position: 'fixed',
+	    top: 0,
+	    left: 0,
+	    zIndex: 1,
+	    paddingTop: 30,
+	    boxSizing: 'border-box',
+	    border: '0 none'
+	  },
+	  'controls': {
+	    height: 30,
+	    width: '100%',
+	    position: 'fixed',
+	    top: 0,
+	    zIndex: 5,
+	    background: '#000'
+	  },
+	  'controls__inner': {
+	    height: '100%',
+	    width: 426,
+	    margin: '0 auto'
+	  },
+	  'controls__button': {
+	    height: '100%',
+	    color: '#fff',
+	    border: '0 none',
+	    verticalAlign: 'top',
+	    background: 'transparent'
+	  },
+	  'controls__button--active': {
+	    color: 'orange'
+	  },
+	  'controls__audio': {
+	    height: '100%',
+	    width: 300
+	  }
+	};
 
 /***/ }
 /******/ ]);

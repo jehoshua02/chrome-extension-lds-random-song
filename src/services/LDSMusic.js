@@ -1,11 +1,18 @@
 var Promise = require('bluebird');
 
+var collections = [
+  'Hymns-EN/269',
+  'Childrens-EN/275'
+];
+
 var hymns = null;
 
-function fetchHymns() {
+function fetchCollection(collection) {
   return new Promise(function (resolve, reject) {
+    var url = 'http://broadcast3.lds.org/crowdsource/Mobile/LDSMusic/Staging/Collections/' + collection + '/Collection.json';
+
     var x = new XMLHttpRequest();
-    x.open('GET', 'http://broadcast3.lds.org/crowdsource/Mobile/LDSMusic/Staging/Collections/Hymns-EN/55/Collection.json');
+    x.open('GET', url);
     x.responseType = 'json';
     x.onload = function() {
       var response = x.response;
@@ -40,7 +47,8 @@ function songFromApiItem(item) {
 module.exports = {
   fetchRandomSong: function () {
     return new Promise(function (resolve, reject) {
-      fetchHymns().then(function (hymns) {
+      var collection = collections[Math.round(Math.random() * collections.length)];
+      fetchCollection(collection).then(function (hymns) {
         var index = Math.round(Math.random() * hymns.length);
         resolve(songFromApiItem(hymns[index]));
       });
