@@ -30538,7 +30538,8 @@
 	  'controls__inner': {
 	    height: '100%',
 	    width: 348,
-	    margin: '0 auto'
+	    margin: '0 auto',
+	    paddingLeft: 16
 	  },
 	  'controls__button': {
 	    height: '100%',
